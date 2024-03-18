@@ -5,7 +5,7 @@ import os
 def check_log_files(directory):
     succesful_string = "fMRIPrep finished successfully!"
 
-    summary = {}
+    summary = []
     for filename in os.listdir(directory):
         file_path = os.path.join(directory, filename)
         if os.path.isfile(file_path) and file_path.endswith('.out'):
@@ -15,9 +15,9 @@ def check_log_files(directory):
                     out_status = 1
                 else:
                     out_status = 0
-        summary.update({sub_ID : out_status})
-
-    summary = dict(sorted(summary.items()))
+        summary.append({'log_file': filename.strip('.out'), 'sub': sub_ID, 'status': out_status})
+        
+    summary = sorted(summary, key=lambda d: d['sub'])
     return summary
 
 if __name__ == "__main__":
@@ -29,15 +29,15 @@ if __name__ == "__main__":
     outfile = args.out_file
 
     summary = check_log_files(log_dir)
-    success_count = sum(1 for v in summary.values() if v==1)
+    success_count = sum(1 for v in summary if v['status']==1)
     fail_count = len(summary) - success_count
 
     with open(outfile, 'w') as f:
-        for sub, status in summary.items():
-            f.write(f"{sub}    {status}\n")
+        for d in summary:
+            f.write(f"{d.get('sub')}\t{d.get('status')}\t{d.get('log_file')}\n")
         f.write('-------------\n')
-        f.write(f'Success    {success_count}\n')
-        f.write(f'Fails      {fail_count}\n')
+        f.write(f'Success\t{success_count}\n')
+        f.write(f'Fails\t{fail_count}\n')
         f.write('-------------\n')
-        f.write(f'Total      {len(summary)}\n')
+        f.write(f'Total\t{len(summary)}\n')
     print('Done')

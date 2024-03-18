@@ -10,6 +10,9 @@
 #SBATCH --time=24:00:00
 # what is this line below doing?
 # source /etc/profile.d/lmod.sh
+# Use as:
+# sbatch --array=1-$(( $(wc -l /home/hfluhr/data/gera_data/participants_yifei.tsv | cut -f1 -d' '))) scripts/fmriprep/fmriprep_gera_yifei.sh
+
 module load singularityce
 
 export SINGULARITYENV_FS_LICENSE=$HOME/freesurfer/license.txt

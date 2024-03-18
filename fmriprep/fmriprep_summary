@@ -1,0 +1,25 @@
+import os
+import argparse
+import os
+
+def check_files(directory):
+
+    succesful_string = "fMRIPrep finished successfully!"
+
+    for filename in os.listdir(directory):
+        file_path = os.path.join(directory, filename)
+        if os.path.isfile(file_path) and file_path.endswith('.out'):
+            with open(file_path, 'r') as file:
+                sub_ID = file.readline().strip()
+                if succesful_string in file.read():
+                    out_status = 1
+                else:
+                    out_status = 0
+        print(f"{sub_ID} {out_status}")
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Check if files in a directory contain a specific string')
+    parser.add_argument('directory', type=str, help='Path to the directory')
+    args = parser.parse_args()
+
+    check_files(args.directory)

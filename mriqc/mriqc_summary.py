@@ -3,7 +3,7 @@ import argparse
 import os
 
 def check_log_files(directory):
-    succesful_string = "fMRIPrep finished successfully!"
+    succesful_string = "Participant level finished successfully."
 
     summary = []
     for filename in os.listdir(directory):

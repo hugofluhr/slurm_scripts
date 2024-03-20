@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=fmriprep
+#SBATCH --job-name=fmriprep-bold
 #SBATCH -o /home/hfluhr/logs/fmriprep/out/%x-%A-%a.out
 #SBATCH -e /home/hfluhr/logs/fmriprep/err/%x-%A-%a.err
 ##SBATCH --mail-user=hugo.fluhr@econ.uzh.ch
@@ -35,20 +35,22 @@ BINDINGS="-B $DATADIR:/data \
 -B ${OUTDIR}:/out"
 
 # processing only 1 session
-SES=$1
-if [ $SES = "extinction" ]
+RUN=$1
+if [ $RUN = "extinction" ]
 then
-    echo '{"bold": {"datatype": "func", "session": "3", "suffix": "extinction_bold"}}' > ${WORKDIR}/filter_file_${SES}.json
+    echo '{"bold": {"datatype": "func", "session": "3", "suffix": "extinction_bold"}}' > ${WORKDIR}/filter_file_${RUN}.json
+elif [ $RUN = "run4" ]
+    echo '{"bold": {"datatype": "func", "session": "3", "run": "4", "suffix": "bold"}}' > ${WORKDIR}/filter_file_${RUN}.json
 else
-    echo '{"bold": {"datatype": "func", "session": "3", "run": "4", "suffix": "bold"}}' > ${WORKDIR}/filter_file_${SES}.json
+    echo 'invalid run identifier, can be "extinction" or "run4"'
 fi
 
 FMRIPREP_CMD="/data /out/fmriprep-23.2.1 participant --participant-label $SUBJECT \
 -w /work \
---bids-filter-file /work/filter_file_${SES}.json \
+--bids-filter-file /work/filter_file_${RUN}.json \
 --skip-bids-validation \
 --fs-subjects-dir /out/fmriprep-23.2.1/sourcedata/freesurfer \
---anat-derivatives /out/fmriprep-23.2.1 \
+--derivatives /out/fmriprep-23.2.1 \
 --nprocs 4 --mem 25G --omp-nthreads 8"
 
 SING_CMD="singularity run --cleanenv $BINDINGS $IMG $FMRIPREP_CMD"

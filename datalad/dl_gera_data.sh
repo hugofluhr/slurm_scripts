@@ -22,7 +22,7 @@ subID=$(sed -n "${SLURM_ARRAY_TASK_ID}p" ${SUBJ_LIST_DIR}/participants_yifei.tsv
 
 subject="sub-${subID}"
 echo $subject
-datalad get $subject/ses-3/anat/*
-datalad get $subject/ses-3/fmap/*
+datalad get $subject/ses-*/anat/*
+datalad get $subject/ses-*/fmap/*
 datalad get $subject/ses-3/func/*run-04*
 datalad get $subject/ses-3/func/*extinction*

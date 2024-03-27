@@ -44,7 +44,6 @@ if __name__ == "__main__":
     process = args.process
 
     logfiles = [os.path.join(log_dir,f) for f in os.listdir(log_dir) if f.endswith(".out")]
-    
     # filter for specific part of workflow if specified
     if process:
         logfiles = filter(lambda s: process in s, logfiles)
@@ -64,4 +63,8 @@ if __name__ == "__main__":
         f.write(f'Other\t{other_count}\n')
         f.write('-------------\n')
         f.write(f'Total\t{len(summary)}\n')
+    print(f'Succes: {success_count}')
+    print(f'Error: {error_count}')
+    print(f'Running: {other_count}')
+
     print('>>>> Done')

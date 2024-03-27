@@ -2,15 +2,15 @@
 #SBATCH --job-name=fmriprep-bold
 #SBATCH -o /home/hfluhr/logs/fmriprep/%x-%A/out/%x-%A-%a.out
 #SBATCH -e /home/hfluhr/logs/fmriprep/%x-%A/err/%x-%A-%a.err
-##SBATCH --mail-user=hugo.fluhr@econ.uzh.ch
-##SBATCH --mail-type=ALL
+#SBATCH --mail-user=hugo.fluhr@econ.uzh.ch
+#SBATCH --mail-type=ALL
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=16
 #SBATCH --mem=32G
 #SBATCH --time=24:00:00
 # what is this line below doing?
 # source /etc/profile.d/lmod.sh
-# Use as:
+# Use as:
 # sbatch --array=1-$(( $(wc -l /home/hfluhr/data/gera_data/participants_yifei.tsv | cut -f1 -d' '))) scripts/fmriprep/fmriprep_bold.sh "extinction"
 
 module load singularityce
@@ -38,7 +38,7 @@ BINDINGS="-B $DATADIR:/data \
 RUN=$1
 if [ $RUN = "extinction" ]
 then
-    echo '{"bold": {"datatype": "func", "session": "3", "suffix": "extinction_bold"}}' > ${WORKDIR}/filter_file_${RUN}.json
+    echo '{"bold": {"datatype": "func", "session": "3", "task": "extinction", "suffix": "bold"}}' > ${WORKDIR}/filter_file_${RUN}.json
 elif [ $RUN = "run4" ]
 then
     echo '{"bold": {"datatype": "func", "session": "3", "run": "4", "suffix": "bold"}}' > ${WORKDIR}/filter_file_${RUN}.json

@@ -14,4 +14,4 @@ module load singularityce
 export SINGULARITYENV_FS_LICENSE=$HOME/freesurfer/license.txt
 export PARTICIPANT_LABEL=$(printf "%02d" $SLURM_ARRAY_TASK_ID)
 # export SINGULARITYENV_TEMPLATEFLOW_HOME=/opt/templateflow
-singularity run --cleanenv -B /home/hfluhr/data/ds004299:/ds004299 -B /scratch/hfluhr/workflows:/workflow /home/hfluhr/data/containers/fmriprep /ds004299 /ds004299/derivatives participant --participant-label sub-103 --skip_bids_validation -w /workflow
+singularity run --cleanenv -B /home/hfluhr/data/learninghabits/ds-learninghabits:/ds-learninghabits -B /scratch/hfluhr/workflows:/workflow /home/hfluhr/data/containers/fmriprep /ds-learninghabits /ds-learninghabits/derivatives participant --participant-label sub-01 --skip_bids_validation -w /workflow

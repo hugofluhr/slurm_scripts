@@ -4,13 +4,17 @@ def combine_summaries(file1, file2, output_file):
     # Read the first input file
     with open(file1, 'r') as f1:
         data1 = [line.strip().split('\t') for line in f1]
+        data1 = data1[1:41]
 
     # Read the second input file
     with open(file2, 'r') as f2:
         data2 = [line.strip().split('\t') for line in f2]
+        data2 = data2[1:41]
 
     # Find the common subIDs with status 0
     common_subids = set(row[0] for row in data1 if row[1] == '0') & set(row[0] for row in data2 if row[1] == '0')
+    common_subids = list(common_subids)
+    common_subids.sort()
 
     # Write the output file
     with open(output_file, 'w') as out:
